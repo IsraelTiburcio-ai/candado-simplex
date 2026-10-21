@@ -1,0 +1,9 @@
+import {fmt,names} from './math.js';
+export const lock=(cl='')=>`<svg class="lock ${cl}" aria-hidden="true"><use href="#lock"/></svg>`;
+const btn=(value,text,label=text)=>`<button class="cell" data-choice="${value}" aria-label="${text}. ${label}">${text}</button>`;
+export function table(s){const rowSelect=['A','E'].includes(s.type),colSelect=['B','C'].includes(s.type);let html=`<table class="matrix"><caption>${s.type==='D'?'Variable de salida · columna de entrada y solución':'Renglones de evaluación · zⱼ − cⱼ'}</caption><thead><tr><th scope="col">${s.type==='D'?'Base':'Nivel'}</th>${s.cols.map((c,j)=>`<th scope="col" data-col="${j}">${colSelect?btn(`c${j}`,c,`Seleccionar columna ${c}`):c}</th>`).join('')}<th scope="col">Sol.</th></tr></thead><tbody>`;
+html+=s.eval.map((r,i)=>`<tr data-row="p${i}" class="priority p${i} ${!rowSelect&&i===s.k?'active':''}"><th scope="row">${rowSelect?btn(`p${i}`,`P${'₁₂₃'[i]}`,`Seleccionar prioridad ${i+1}`):`P${'₁₂₃'[i]}`}</th>${r.slice(0,-1).map((v,j)=>`<td data-col="${j}">${colSelect?btn(`c${j}`,fmt(v),`Columna ${s.cols[j]}, prioridad ${i+1}, coeficiente ${fmt(v)}`):fmt(v)}</td>`).join('')}<td class="rhs">${fmt(r.at(-1))}</td></tr>`).join('');
+if(s.type==='D')html+=s.state.rows.map((r,i)=>`<tr data-row="r${i}"><th scope="row">${btn(`r${i}`,names[s.state.base[i]],`Sale ${names[s.state.base[i]]}, coeficiente ${fmt(r[s.entry])}, solución ${fmt(r[12])}`)}</th><td>${fmt(r[s.entry])}</td><td class="rhs">${fmt(r[12])}</td></tr>`).join('');
+if(s.type==='E'&&s.k===2)html+=`<tr><th colspan="${s.cols.length+2}">${btn('end','Cerrar proceso →','Terminar: no quedan prioridades')}</th></tr>`;
+return html+'</tbody></table>';}
+export function locks(s){return [0,1,2].map(i=>`<div class="priority-lock p${i}" id="lock-${i}">${lock()}<div><strong>P${'₁₂₃'[i]}</strong><small>${['A','E'].includes(s.type)?'Nivel jerárquico':i<s.k?'Protegida':i===s.k?'En evaluación':'En espera'}</small></div></div>`).join('');}

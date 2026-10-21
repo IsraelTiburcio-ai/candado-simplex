@@ -1,0 +1,1 @@
+{"name":"candado-simplex","version":"1.0.0","private":true,"type":"module","scripts":{"test":"node tests/math.mjs && python3 tests/exact.py","qa":"node tests/browser.mjs","start":"python3 -m http.server 4289"},"devDependencies":{"@axe-core/playwright":"^4.10.2","playwright":"^1.56.0"}}
