@@ -26,7 +26,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir _site
-          cp index.html styles.css lock.svg ACADEMICO.md _site/
+          cp index.html styles.css lock.svg ACADEMICO.md optilab-results.js _site/
           cp -r src _site/src
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
